@@ -11,6 +11,11 @@ keywords = ["rustls", "tls"]
 edition = "2024"
 rust-version = "1.85"
 
+[dependencies]
+rand = { version = "0.10.0-rc.5", default-features = false, features = [
+  "os_rng",
+] }
+
 [dependencies.aead]
 version = "0.6.0-rc.3"
 default-features = false
@@ -80,9 +85,9 @@ default-features = false
 features = []
 
 [dependencies.rsa]
-version = "0.9.9"
+version = "0.10.0-rc.10"
 default-features = false
-features = ["sha2"]
+features = ["sha2", "encoding"]
 
 [dependencies.rustls]
 version = "0.23.35"
@@ -91,7 +96,7 @@ default-features = false
 [dependencies.sec1]
 version = "0.8.0-rc.10"
 default-features = false
-features = ["pem"]
+features = ["pem", "der"]
 
 [dependencies.sha2]
 version = "0.11.0-rc.3"

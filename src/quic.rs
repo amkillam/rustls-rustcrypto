@@ -3,8 +3,8 @@
 #[cfg(feature = "alloc")]
 use alloc::boxed::Box;
 
-use aead::AeadCore;
-use chacha20poly1305::{AeadInPlace, KeyInit, KeySizeUser};
+use aead::{AeadCore, AeadInOut};
+use chacha20poly1305::{KeyInit, KeySizeUser};
 use crypto_common::typenum::Unsigned;
 use rustls::crypto::cipher::{self, AeadKey, Iv};
 use rustls::{Error, Tls13CipherSuite, quic};
@@ -76,7 +76,7 @@ impl quic::PacketKey for PacketKey {
 
         let tag = self
             .crypto
-            .encrypt_in_place_detached(&nonce.into(), aad, payload)
+            .encrypt_inout_detached(&nonce.into(), aad, payload.into())
             .map_err(|_| rustls::Error::EncryptError)?;
         Ok(quic::Tag::from(tag.as_ref()))
     }

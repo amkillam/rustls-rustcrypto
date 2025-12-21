@@ -7,7 +7,6 @@ use pkcs8::DecodePrivateKey;
 use pki_types::PrivateKeyDer;
 use rustls::sign::SigningKey;
 use rustls::{SignatureAlgorithm, SignatureScheme};
-use sec1::DecodeEcPrivateKey;
 
 macro_rules! impl_ecdsa {
     ($name: ident, $scheme: expr, $signing_key: ty, $signature: ty) => {
@@ -24,10 +23,36 @@ macro_rules! impl_ecdsa {
                 fn try_from(value: &PrivateKeyDer<'_>) -> Result<Self, Self::Error> {
                     let pkey = match value {
                         PrivateKeyDer::Pkcs8(der) => {
-                            $signing_key::from_pkcs8_der(der.secret_pkcs8_der()).map_err(|e| format!("failed to decrypt private key: {e}"))
+                           $signing_key::from_pkcs8_der(der.secret_pkcs8_der()).map_err(|e| format!("failed to decrypt private key: {e}"))
                         },
                         PrivateKeyDer::Sec1(sec1) => {
-                            $signing_key::from_sec1_der(sec1.secret_sec1_der()).map_err(|e| format!("failed to decrypt private key: {e}"))
+use der::Decode;
+use der::asn1::OctetStringRef;
+                            let private_key = sec1.secret_sec1_der();
+
+                            let params_oid = sec1::EcPrivateKey::from_der(private_key)
+        .map_err(|e| rustls::Error::General(format!("failed to parse EC private key: {}", e)))?
+        .parameters
+        .and_then(|params| params.named_curve());
+
+    let algorithm = pkcs8::AlgorithmIdentifierRef {
+        oid: sec1::ALGORITHM_OID,
+        parameters: params_oid.as_ref().map(Into::into),
+    };
+
+    let private_key = OctetStringRef::new(private_key).map_err(|e| {
+        rustls::Error::General(format!("failed to parse private key octet string: {}", e))
+    })?;
+
+    let info = pkcs8::PrivateKeyInfoRef {
+        algorithm,
+        private_key,
+        public_key: None,
+    };
+
+    Ok($signing_key::try_from(info).map_err(|e| {
+        rustls::Error::General(format!("failed to create ECDSA signing key: {}", e))
+    })?)
                         },
                         PrivateKeyDer::Pkcs1(_) => Err(format!("ECDSA does not support PKCS#1 key")),
                         _ => Err("not supported".into()),

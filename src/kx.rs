@@ -3,6 +3,7 @@ use alloc::boxed::Box;
 
 use crypto::{SharedSecret, SupportedKxGroup};
 use paste::paste;
+use rand::TryRngCore;
 use rustls::crypto;
 
 #[derive(Debug)]
@@ -14,7 +15,11 @@ impl crypto::SupportedKxGroup for X25519 {
     }
 
     fn start(&self) -> Result<Box<dyn crypto::ActiveKeyExchange>, rustls::Error> {
-        let priv_key = x25519_dalek::EphemeralSecret::random_from_rng(rand_core::OsRng);
+        let priv_key = {
+            let os_rng = &mut rand::rngs::OsRng;
+            let mut rng = os_rng.unwrap_mut();
+            x25519_dalek::EphemeralSecret::random_from_rng(&mut rng)
+        };
         let pub_key = (&priv_key).into();
         Ok(Box::new(X25519KeyExchange { priv_key, pub_key }))
     }
@@ -60,7 +65,8 @@ macro_rules! impl_kx {
                 }
 
                 fn start(&self) -> Result<Box<dyn crypto::ActiveKeyExchange>, rustls::Error> {
-                    let priv_key = $secret::random(&mut rand_core::OsRng);
+                    let priv_key = $secret::try_from_rng(&mut rand::rngs::OsRng).map_err(|_e|
+                        rustls::Error::General("failed to generate ephemeral secret".into()))?;
                     let pub_key: $public_key = (&priv_key).into();
                     Ok(Box::new([<$name KeyExchange>] {
                         priv_key,
