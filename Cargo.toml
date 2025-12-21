@@ -8,9 +8,8 @@ readme = "README.md"
 repository = "https://github.com/RustCrypto/rustls-rustcrypto"
 categories = ["cryptography", "no-std"]
 keywords = ["rustls", "tls"]
-edition = "2021"
+edition = "2024"
 rust-version = "1.75"
-resolver = "1"
 
 [dependencies.aead]
 version = "0.6.0-rc.3"
