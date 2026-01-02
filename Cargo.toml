@@ -9,15 +9,15 @@ repository = "https://github.com/RustCrypto/rustls-rustcrypto"
 categories = ["cryptography", "no-std"]
 keywords = ["rustls", "tls"]
 edition = "2024"
-rust-version = "1.85"
+rust-version = "1.85.0"
 
 [dependencies]
-rand = { version = "0.10.0-rc.5", default-features = false, features = [
-  "os_rng",
+rand = { git = "https://github.com/rust-random/rand.git", rev = "75fe38fff59e5abb16ed5a146d61960cad27dc0f", version = "0.10.0-rc.5", default-features = false, features = [
+  "sys_rng",
 ] }
 
 [dependencies.aead]
-version = "0.6.0-rc.3"
+version = "0.6.0-rc.5"
 default-features = false
 
 [dependencies.aes-gcm]
@@ -30,7 +30,7 @@ version = "0.11.0-rc.2"
 default-features = false
 
 [dependencies.crypto-common]
-version = "0.2.0-rc.5"
+version = "0.2.0-rc.8"
 default-features = false
 
 [dependencies.der]
@@ -38,11 +38,11 @@ version = "0.8.0-rc.10"
 default-features = false
 
 [dependencies.digest]
-version = "0.11.0-rc.4"
+version = "0.11.0-rc.5"
 default-features = false
 
 [dependencies.ecdsa]
-version = "0.17.0-rc.9"
+version = "0.17.0-rc.10"
 default-features = false
 features = ["alloc"]
 
@@ -56,12 +56,12 @@ version = "0.13.0-rc.3"
 default-features = false
 
 [dependencies.p256]
-version = "0.14.0-rc.1"
+version = "0.14.0-rc.2"
 default-features = false
 features = ["pem", "ecdsa", "ecdh"]
 
 [dependencies.p384]
-version = "0.14.0-rc.1"
+version = "0.14.0-rc.2"
 default-features = false
 features = ["pem", "ecdsa", "ecdh"]
 
@@ -80,11 +80,13 @@ version = "1.13.2"
 default-features = false
 
 [dependencies.rand_core]
-version = "0.10.0-rc-2"
+version = "0.10.0-rc-3"
 default-features = false
 features = []
 
 [dependencies.rsa]
+git = "https://github.com/amkillam/rsa.git"
+branch = "crypto-bigint/v0.7.0-rc.13"
 version = "0.10.0-rc.10"
 default-features = false
 features = ["sha2", "encoding"]
@@ -103,7 +105,7 @@ version = "0.11.0-rc.3"
 default-features = false
 
 [dependencies.signature]
-version = "3.0.0-rc.5"
+version = "3.0.0-rc.6"
 default-features = false
 
 [dependencies.webpki]
@@ -126,3 +128,10 @@ tls12 = ["rustls/tls12"]
 std = ["alloc", "webpki/std", "pki-types/std", "rustls/std"]
 alloc = ["webpki/alloc", "pki-types/alloc", "aead/alloc", "ed25519-dalek/alloc"]
 zeroize = ["ed25519-dalek/zeroize", "x25519-dalek/zeroize"]
+
+[package.metadata.patch]
+crates = ["rsa", "crypto-primes"]
+
+[patch.crates-io]
+rsa = { git = "https://github.com/amkillam/rsa.git", branch = "crypto-bigint/v0.7.0-rc.13" }
+crypto-primes = { git = "https://github.com/tarcieri/crypto-primes", branch = "crypto-bigint/v0.7.0-rc.13" }

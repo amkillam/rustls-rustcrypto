@@ -65,7 +65,7 @@ pub fn provider() -> CryptoProvider {
 
 impl SecureRandom for Provider {
     fn fill(&self, bytes: &mut [u8]) -> Result<(), GetRandomFailed> {
-        rand::rngs::OsRng
+        rand::rngs::SysRng
             .try_fill_bytes(bytes)
             .map_err(|_| GetRandomFailed)
     }
