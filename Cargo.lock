@@ -680,7 +680,7 @@ dependencies = [
 
 [[package]]
 name = "rustls-rustcrypto"
-version = "0.0.3-alpha"
+version = "0.0.4-alpha"
 dependencies = [
  "aead",
  "aes-gcm",
