@@ -161,8 +161,9 @@ dependencies = [
 
 [[package]]
 name = "crypto-primes"
-version = "0.7.0-dev"
-source = "git+https://github.com/tarcieri/crypto-primes?branch=crypto-bigint%2Fv0.7.0-rc.13#f98697886371aa15446ca53ef5b9e9e44efbabf8"
+version = "0.7.0-pre.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "da0b07a7a616370e8b6efca0c6a25e5f4c6d02fde11f3d570e4af64d8ed7e2e9"
 dependencies = [
  "crypto-bigint",
  "libm",
@@ -609,8 +610,9 @@ dependencies = [
 
 [[package]]
 name = "rsa"
-version = "0.10.0-rc.10"
-source = "git+https://github.com/amkillam/rsa.git?branch=crypto-bigint%2Fv0.7.0-rc.13#5334f9f68dc0a76ed5529bf14e8cc6673f695ed9"
+version = "0.10.0-rc.11"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d27d813937fdf8e9ad15e3e422a55da4021d29639000139ca19d99f3949060da"
 dependencies = [
  "const-oid",
  "crypto-bigint",
