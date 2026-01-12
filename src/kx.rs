@@ -65,8 +65,9 @@ macro_rules! impl_kx {
                 }
 
                 fn start(&self) -> Result<Box<dyn crypto::ActiveKeyExchange>, rustls::Error> {
-                    let priv_key = $secret::try_from_rng(&mut rand::rngs::SysRng).map_err(|_e|
-                        rustls::Error::General("failed to generate ephemeral secret".into()))?;
+                    let priv_key = <$secret as crypto_common::Generate>::try_generate_from_rng::<rand::rngs::SysRng>(&mut rand::rngs::SysRng).map_err(|_e|
+                        rustls::Error::General("failed to generate ephemeral secret".into())
+                    )?;
                     let pub_key: $public_key = (&priv_key).into();
                     Ok(Box::new([<$name KeyExchange>] {
                         priv_key,

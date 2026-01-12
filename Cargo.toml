@@ -11,10 +11,10 @@ keywords = ["rustls", "tls"]
 edition = "2024"
 rust-version = "1.85.0"
 
-[dependencies]
-rand = { git = "https://github.com/rust-random/rand.git", rev = "75fe38fff59e5abb16ed5a146d61960cad27dc0f", version = "=0.10.0-rc.5", default-features = false, features = [
-  "sys_rng",
-] }
+[dependencies.rand]
+version = "=0.10.0-rc.6"
+default-features = false
+features = ["sys_rng"]
 
 [dependencies.aead]
 version = "=0.6.0-rc.5"
@@ -30,7 +30,7 @@ version = "=0.11.0-rc.2"
 default-features = false
 
 [dependencies.crypto-common]
-version = "=0.2.0-rc.8"
+version = "=0.2.0-rc.9"
 default-features = false
 
 [dependencies.der]
@@ -42,12 +42,12 @@ version = "=0.11.0-rc.5"
 default-features = false
 
 [dependencies.ecdsa]
-version = "=0.17.0-rc.10"
+version = "=0.17.0-rc.12"
 default-features = false
 features = ["alloc"]
 
 [dependencies.ed25519-dalek]
-version = "=3.0.0-pre.3"
+version = "=3.0.0-pre.4"
 default-features = false
 features = ["pkcs8"]
 
@@ -56,12 +56,12 @@ version = "=0.13.0-rc.3"
 default-features = false
 
 [dependencies.p256]
-version = "=0.14.0-rc.2"
+version = "=0.14.0-rc.4"
 default-features = false
 features = ["pem", "ecdsa", "ecdh"]
 
 [dependencies.p384]
-version = "=0.14.0-rc.2"
+version = "=0.14.0-rc.4"
 default-features = false
 features = ["pem", "ecdsa", "ecdh"]
 
@@ -85,16 +85,16 @@ default-features = false
 features = []
 
 [dependencies.rsa]
-version = "=0.10.0-rc.11"
+version = "=0.10.0-rc.12"
 default-features = false
 features = ["sha2", "encoding"]
 
 [dependencies.rustls]
-version = "=0.23.35"
+version = "=0.23.36"
 default-features = false
 
 [dependencies.sec1]
-version = "=0.8.0-rc.10"
+version = "=0.8.0-rc.11"
 default-features = false
 features = ["pem", "der"]
 
@@ -112,11 +112,11 @@ version = "=0.103.8"
 default-features = false
 
 [dependencies.x25519-dalek]
-version = "=3.0.0-pre.3"
+version = "=3.0.0-pre.4"
 default-features = false
 
 [dev-dependencies.getrandom]
-version = "=0.3"
+version = "=0.3.4"
 features = []
 
 [features]
